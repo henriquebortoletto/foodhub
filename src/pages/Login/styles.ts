@@ -34,15 +34,6 @@ export const Login = styled(Button)(({ theme }) => ({
   },
 }))
 
-export const Google = styled(Button)(({ theme }) => ({
-  fontWeight: theme.typography.fontWeightRegular,
-  boxShadow: theme.shadows[0],
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.spacing(1),
-  marginBottom: theme.spacing(1),
-}))
-
 export const Divider = styled(DividerMui)(({ theme }) => ({
   width: '100%',
   marginBottom: theme.spacing(2),

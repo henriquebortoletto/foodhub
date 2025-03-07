@@ -1,12 +1,15 @@
+import React from 'react'
 import { useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChefHat } from 'lucide-react'
+import { FirebaseError } from 'firebase/app'
 import * as z from 'zod'
 
 import { TextField, Typography } from '@mui/material'
 import { Card } from '@/components/Card'
 import { createUser } from '@/services/authService'
+import { transformTranslate } from '@/lib/translate'
 
 import * as S from './styles'
 
@@ -21,6 +24,8 @@ const createUserschema = z.object({
 type FormData = z.infer<typeof createUserschema>
 
 export const Register = () => {
+  const [loading, setLoading] = React.useState(false)
+
   const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(createUserschema),
     defaultValues: { email: '', password: '', name: '' },
@@ -29,11 +34,20 @@ export const Register = () => {
   const navigate = useNavigate()
 
   const onSubmit = async ({ name, email, password }: FormData) => {
+    setLoading(true)
+
     try {
       await createUser({ name, email, password })
       navigate('/')
     } catch (error) {
-      console.error('Erro ao cadastrar o usuário:', error)
+      if (error instanceof FirebaseError) {
+        console.error('Erro de autenticação:', error.code)
+        alert(transformTranslate(error.code))
+      } else {
+        console.error('Erro desconhecido:', error)
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -78,7 +92,13 @@ export const Register = () => {
           helperText={formState.errors.password?.message}
           style={{ marginBottom: 16 }}
         />
-        <S.Account type="submit" fullWidth variant="contained" color="primary">
+        <S.Account
+          loading={loading}
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+        >
           Criar Conta
         </S.Account>
       </S.Form>

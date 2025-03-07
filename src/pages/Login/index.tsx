@@ -6,7 +6,7 @@ import { ChefHat } from 'lucide-react'
 import * as z from 'zod'
 
 import { TextField, Typography } from '@mui/material'
-import { loginWithEmail, loginWithGoogle } from '@/services/authService'
+import { loginWithEmail } from '@/services/authService'
 
 import { Card } from '@/components/Card'
 
@@ -33,15 +33,6 @@ export const Login = () => {
   })
 
   const navigate = useNavigate()
-
-  const handleGoogleLogin = async () => {
-    try {
-      await loginWithGoogle()
-      navigate('/')
-    } catch (error) {
-      console.error('Erro ao autenticar com Google:', error)
-    }
-  }
 
   const onSubmit = async ({ email, password }: FormData) => {
     setLoading(true)
@@ -95,15 +86,6 @@ export const Login = () => {
         </S.Login>
       </S.Form>
       <S.Divider />
-      <S.Google
-        onClick={handleGoogleLogin}
-        fullWidth
-        variant="outlined"
-        color="primary"
-      >
-        <img src="/google.svg" alt="Google" width={20} height={20} />
-        Entrar com Google
-      </S.Google>
       <Typography variant="body2" color="textSecondary">
         Não tem uma conta? <S.Register to="/register">Cadastre-se</S.Register>
       </Typography>

@@ -1,6 +1,4 @@
 import {
-  GoogleAuthProvider,
-  signInWithPopup,
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
@@ -27,11 +25,6 @@ export const loginWithEmail = async ({
   password,
 }: { email: string; password: string }): Promise<void> => {
   await signInWithEmailAndPassword(auth, email, password)
-}
-
-export const loginWithGoogle = async () => {
-  const provider = new GoogleAuthProvider()
-  await signInWithPopup(auth, provider)
 }
 
 export const logout = async (): Promise<void> => {
